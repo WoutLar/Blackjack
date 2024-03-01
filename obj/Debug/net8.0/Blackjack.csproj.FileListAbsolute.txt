@@ -12,3 +12,4 @@ C:\Users\wout\RiderProjects\Blackjack\obj\Debug\net8.0\refint\Blackjack.dll
 C:\Users\wout\RiderProjects\Blackjack\obj\Debug\net8.0\Blackjack.pdb
 C:\Users\wout\RiderProjects\Blackjack\obj\Debug\net8.0\Blackjack.genruntimeconfig.cache
 C:\Users\wout\RiderProjects\Blackjack\obj\Debug\net8.0\ref\Blackjack.dll
+C:\Users\wout\RiderProjects\Blackjack\obj\Debug\net8.0\Blackjack.sourcelink.json
