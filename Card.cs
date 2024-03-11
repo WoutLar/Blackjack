@@ -10,8 +10,8 @@ public enum Suits
 
 public enum Ranks
 {
-    ACE = 1,
-    TWO,
+    ACE = 11,
+    TWO = 2,
     THREE,
     FOUR,
     FIVE,

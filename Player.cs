@@ -1,26 +1,40 @@
-﻿
-    namespace Blackjack
+﻿using System;
+
+namespace Blackjack
+{
+    public class Player
     {
-        public class Player : PlayerOptions
+        public Hand Hand { get; }
+        public int BetAmount { get; private set; } = 0;
+
+        public Player()
         {
-            protected override void UpdateScore()
-            {
-                Score = 0;
-                int numberOfAces = 0;
-                foreach (Card card in Hand)
-                {
-                    if (card.Rank == Ranks.ACE)
-                    {
-                        numberOfAces++;
-                    }
-                    Score += (int)card.Rank;
-                }
-                while (Score > 21 && numberOfAces > 0)
-                {
-                    Score -= 10;
-                    numberOfAces--;
-                }
-            }
+            Hand = new Hand();
         }
 
+        public virtual void Hit(Deck deck)
+        {
+            Card drawnCard = deck.Draw();
+            Hand.AddCard(drawnCard);
+        }
+
+        public virtual void Stand()
+        {
+            Console.WriteLine("Player stands.");
+        }
+
+        public virtual void DoubleDown(Deck deck)
+        {
+            BetAmount *= 2;
+            Card drawnCard = deck.Draw();
+            Hand.AddCard(drawnCard);
+            
+            Stand();
+        }
+
+        public virtual void Split()
+        {
+            // Implement split logic here
+        }
     }
+}

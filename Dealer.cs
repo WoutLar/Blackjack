@@ -1,16 +1,15 @@
-﻿
-    namespace Blackjack
-    {
-        public class Dealer : PlayerOptions
-        {
-            protected override void UpdateScore()
-            {
-                Score = 0;
-                foreach (Card card in Hand)
-                {
-                    Score += (int)card.Rank;
-                }
-            }
-        }
+﻿// Dealer.cs
+using System;
+using System.Collections.Generic;
 
+namespace Blackjack
+{
+    public class Dealer : Player
+    {
+        public override void Stand()
+        {
+            Console.WriteLine("Dealer stands.");
+        }
+        
     }
+}

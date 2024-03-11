@@ -43,4 +43,9 @@ public class Deck
     {
         discardPile.Add(card);
     }
+    
+    public void ShuffleDrawPile()
+    {
+        drawPile.Shuffle();
+    }
 }
