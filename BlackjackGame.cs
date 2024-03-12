@@ -5,6 +5,8 @@ namespace Blackjack
 {
     class BlackjackGame
     {
+        private static Random random = new Random();
+        private int WaitRandomTime = 0;
         private Deck deck;
         private Dealer dealer;
         private List<Player> players = new List<Player>();
@@ -88,36 +90,86 @@ namespace Blackjack
 
         private void StartGame()
         {
-            // Deal cards to the dealer and players
             foreach (Player player in players)
             {
                 player.Hand.AddCard(deck.Draw());
             }
             dealer.Hand.AddCard(deck.Draw());
+            Console.WriteLine("Dealers cards:");
             dealer.Hand.DealerDisplay();
             foreach (Player player in players)
             {
                 Console.WriteLine($"Player {players.IndexOf(player) + 1}'s hand:");
                 player.Hand.Display();
             }
+            Thread.Sleep(8000);
             foreach (Player player in players)
             {
                 player.Hand.AddCard(deck.Draw());
             }
             dealer.Hand.AddCard(deck.Draw());
+            Console.WriteLine("Dealers cards:");
             dealer.Hand.DealerDisplay();
+            
             Card dealerUpCard = dealer.Hand.GetUpCard();
             if (dealerUpCard.Rank == Ranks.ACE)
             {
                 Console.WriteLine("Dealer's face-up card is an Ace. You can place an insurance bet.");
                 foreach (Player player in players)
                 {
+                    Console.WriteLine("Placeholder message Insurrance bet not added Yet PLay on");
                 }
             }
+            foreach (Player player in players)
+            {
+                Console.WriteLine($"Player {players.IndexOf(player) + 1}'s hand:");
+                player.Hand.Display();
+            }
             
-            Console.WriteLine("Dealer's hand:");
-            dealer.Hand.Display();
+            PlayerTurns();
         }
+
+        
+        private void PlayerTurns()
+        {
+            foreach (Player player in players)
+            {
+                Console.WriteLine($"Player {players.IndexOf(player) + 1}'s turn:");
+                bool stand = false;
+                while (!player.Hand.IsBusted() || stand == false)
+                {
+                    Console.WriteLine($"Player {players.IndexOf(player) + 1} is thinking:");
+                    Random random = new Random();
+                    int waitTime = random.Next(2000, 9000); // 2-9 sec delay
+                    Thread.Sleep(waitTime);
+                     string playerAction  = player.PlayBasicStrategy(dealer.Hand.GetUpCard(), deck);
+                     if (playerAction == "hit")
+                     {
+                         Console.WriteLine($"1 Grab a card for Player {players.IndexOf(player) + 1}");
+                         Console.ReadLine();
+                         player.Hit(deck);
+                         Console.WriteLine($"Player {players.IndexOf(player) + 1}'s hand:");
+                         player.Hand.Display();
+                     }
+                     else if (playerAction == "stand")
+                     {
+                         player.Stand();
+                         stand = true;
+                         Console.WriteLine("no dealer input needed, play on");
+                     }else if (playerAction == "DD")
+                     {
+                         Console.WriteLine($"1 Grab a card for Player {players.IndexOf(player) + 1}");
+                         Console.ReadLine();
+                         player.DoubleDown(deck);
+                         Console.WriteLine($"Player {players.IndexOf(player) + 1}'s hand:");
+                         player.Hand.Display();
+                         player.Stand();
+                         stand = true;
+                     }
+                }
+            }
+        }
+
 
 
         private int ChooseNumberOfPlayers()
@@ -129,6 +181,11 @@ namespace Blackjack
             } while (!int.TryParse(Console.ReadLine(), out numPlayers) || numPlayers < 1 || numPlayers > 4);
 
             return numPlayers;
+        }
+    
+        public void ReRandomizer()
+        {
+            WaitRandomTime = random.Next(3000, 9000);
         }
     }
 }

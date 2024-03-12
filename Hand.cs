@@ -18,9 +18,13 @@ namespace Blackjack
         {
             foreach (var card in cards)
             {
+                Console.WriteLine("");
                 Console.WriteLine("[ - "+card+" - ]");
+                Thread.Sleep(200);
             }
+            Console.WriteLine("");
             Console.WriteLine($"Total Score: {Score}");
+            Console.WriteLine("-----------------------");
         }
 
         public void DealerDisplay()
@@ -29,12 +33,17 @@ namespace Blackjack
             {
                 if (i == 1) 
                 {
+                    Console.WriteLine("");
                     Console.WriteLine("[ - " + cards[i] + " - ]");
+                    Thread.Sleep(400);
                 }
                 else
                 {
+                    Console.WriteLine("");
                     Console.WriteLine("[ - xxxxxxxxx - ]");
                 }
+                Console.WriteLine("");
+                Console.WriteLine("----------------------");
             }
         }
 
@@ -65,7 +74,7 @@ namespace Blackjack
 
         public bool HasBlackJack()
         {
-            return cards.Count == 2 && Score == 21;
+            return Score == 21;
         }
 
         
