@@ -26,6 +26,7 @@ namespace Blackjack
                 {
                     case "1":
                         Hit(deck);
+                        Hand.Display();
                         break;
                     case "2":
                         Stand();
@@ -34,6 +35,11 @@ namespace Blackjack
                         Console.WriteLine("Invalid input. Please try again.");
                         break;
                 }
+            }
+
+            if (Hand.IsBusted())
+            {
+                Console.WriteLine("Dealer Busted"); 
             }
         }
 

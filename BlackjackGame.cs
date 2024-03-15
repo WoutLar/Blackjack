@@ -14,7 +14,6 @@ namespace Blackjack
 
         public BlackjackGame()
         {
-            deck = new Deck();
             dealer = new Dealer();
         }
 
@@ -102,8 +101,9 @@ namespace Blackjack
             {
                 Console.WriteLine($"Player {players.IndexOf(player) + 1}'s hand:");
                 player.Hand.Display();
+                Thread.Sleep(2000);
             }
-            Thread.Sleep(8000);
+            Thread.Sleep(4000);
             foreach (Player player in players)
             {
                 player.Hand.AddCard(deck.Draw());
@@ -177,8 +177,8 @@ namespace Blackjack
         {
             Console.Write("Dealers turn:");
             Console.WriteLine("what will you do?");
-            Console.ReadLine();
             Console.WriteLine("(FOR NOW! nothing matters what you input)");
+            Console.ReadLine();
             Console.WriteLine("Dealer's hand:");
             dealer.Hand.DealerDisplay();
             Thread.Sleep(1000);
