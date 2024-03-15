@@ -5,6 +5,7 @@ namespace Blackjack
 {
     class BlackjackGame
     {
+        
         private static Random random = new Random();
         private int WaitRandomTime = 0;
         private Deck deck;
@@ -126,50 +127,66 @@ namespace Blackjack
                 player.Hand.Display();
             }
             
-            PlayerTurns();
+            
         }
 
         
-        private void PlayerTurns()
+        public void PlayerTurns()
         {
             foreach (Player player in players)
             {
                 Console.WriteLine($"Player {players.IndexOf(player) + 1}'s turn:");
                 bool stand = false;
-                while (!player.Hand.IsBusted() || stand == false)
+                while (!player.Hand.IsBusted() && !stand)
                 {
                     Console.WriteLine($"Player {players.IndexOf(player) + 1} is thinking:");
-                    Random random = new Random();
-                    int waitTime = random.Next(2000, 9000); // 2-9 sec delay
-                    Thread.Sleep(waitTime);
-                     string playerAction  = player.PlayBasicStrategy(dealer.Hand.GetUpCard(), deck);
-                     if (playerAction == "hit")
-                     {
-                         Console.WriteLine($"1 Grab a card for Player {players.IndexOf(player) + 1}");
-                         Console.ReadLine();
-                         player.Hit(deck);
-                         Console.WriteLine($"Player {players.IndexOf(player) + 1}'s hand:");
-                         player.Hand.Display();
-                     }
-                     else if (playerAction == "stand")
-                     {
-                         player.Stand();
-                         stand = true;
-                         Console.WriteLine("no dealer input needed, play on");
-                     }else if (playerAction == "DD")
-                     {
-                         Console.WriteLine($"1 Grab a card for Player {players.IndexOf(player) + 1}");
-                         Console.ReadLine();
-                         player.DoubleDown(deck);
-                         Console.WriteLine($"Player {players.IndexOf(player) + 1}'s hand:");
-                         player.Hand.Display();
-                         player.Stand();
-                         stand = true;
-                     }
+                    ReRandomizer();
+                    Thread.Sleep(WaitRandomTime);
+                    string playerAction = player.PlayBasicStrategy(dealer.Hand.GetUpCard(), deck);
+    
+                    if (playerAction == "hit")
+                    {
+                        Console.WriteLine($"1 Grab a card for Player {players.IndexOf(player) + 1}");
+                        Console.ReadLine();
+                        player.Hit(deck);
+                        Console.WriteLine($"Player {players.IndexOf(player) + 1}'s hand:");
+                        player.Hand.Display();
+                    }
+                    else if (playerAction == "stand")
+                    {
+                        player.Stand();
+                        stand = true;
+                        Console.WriteLine("no dealer input needed, play on");
+                        Thread.Sleep(1000);
+                    }
+                    else if (playerAction == "DD")
+                    {
+                        Console.WriteLine($"1 Grab a card for Player {players.IndexOf(player) + 1}");
+                        Console.ReadLine();
+                        player.DoubleDown(deck);
+                        Console.WriteLine($"Player {players.IndexOf(player) + 1}'s hand:");
+                        player.Hand.Display();
+                        player.Stand();
+                        stand = true;
+                    }
                 }
             }
         }
 
+        public void DealerTurn()
+        {
+            Console.Write("Dealers turn:");
+            Console.WriteLine("what will you do?");
+            Console.ReadLine();
+            Console.WriteLine("(FOR NOW! nothing matters what you input)");
+            Console.WriteLine("Dealer's hand:");
+            dealer.Hand.DealerDisplay();
+            Thread.Sleep(1000);
+            Console.WriteLine("Dealer's hand:");
+            dealer.Hand.Display();
+            Thread.Sleep(1000);
+            dealer.DealerChoice(deck);
+        }
 
 
         private int ChooseNumberOfPlayers()

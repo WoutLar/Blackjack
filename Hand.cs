@@ -42,9 +42,9 @@ namespace Blackjack
                     Console.WriteLine("");
                     Console.WriteLine("[ - xxxxxxxxx - ]");
                 }
-                Console.WriteLine("");
-                Console.WriteLine("----------------------");
             }
+            Console.WriteLine("");
+            Console.WriteLine("----------------------");
         }
 
         private void UpdateScore()

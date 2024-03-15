@@ -8,9 +8,10 @@ namespace Blackjack
         {
             BlackjackGame game = new BlackjackGame();
             Deck carddeck = new Deck();
+            
             bool exit = false;
             bool debugMode = false;
-
+            bool PLayAgain = true;
             while (!exit)
             {
                 Console.WriteLine("Choose an action:");
@@ -33,7 +34,32 @@ namespace Blackjack
                 switch (input)
                 {
                     case "1":
-                        game.SetupGame();
+                        while (PLayAgain)
+                        {
+                            game.SetupGame();
+                        
+                            game.PlayerTurns();
+                            game.DealerTurn();
+
+                            Console.WriteLine("play again?");
+                            input = Console.ReadLine();
+                            switch (input)
+                            {
+                                case "y":
+                                    Console.WriteLine("Game will play on:");
+                                    PLayAgain = true;
+                                    break;
+                                    
+                                case "n":
+                                    Console.WriteLine("Game will close");
+                                    PLayAgain = false;
+                                    break;
+                                    
+                                default:
+                                    Console.WriteLine("Invalid input. Please try again.");
+                                    break;
+                            }
+                        }
                         break;
                     case "2":
                         if (debugMode)
