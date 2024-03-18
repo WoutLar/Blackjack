@@ -44,8 +44,10 @@ public class Deck
         discardPile.Add(card);
     }
     
-    public void ShuffleDrawPile()
+    public void Delete()
     {
-        drawPile.Shuffle();
+        drawPile = null;
+        discardPile = null;
     }
+    
 }

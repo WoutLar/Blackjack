@@ -37,7 +37,7 @@ namespace Blackjack
             // TBD split logic
         }
         
-        public string PlayBasicStrategy(Card dealerUpcard, Deck deck)
+        public string PlayBasicStrategy(Card dealerUpcard, Deck deck) // logica met hulp van chatgpt gemaakt om te kijken wat de hoogste win % is 
         {
             int handTotal = Hand.Score;
             string Action = "stand";

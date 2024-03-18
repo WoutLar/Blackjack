@@ -40,6 +40,7 @@ namespace Blackjack
                         
                             game.PlayerTurns();
                             game.DealerTurn();
+                            game.CheckRewards();
 
                             Console.WriteLine("play again?");
                             input = Console.ReadLine();
@@ -48,12 +49,13 @@ namespace Blackjack
                                 case "y":
                                     Console.WriteLine("Game will play on:");
                                     PLayAgain = true;
+                                    game.ResetHands();
                                     break;
-                                    
                                 case "n":
                                     Console.WriteLine("Game will close");
                                     PLayAgain = false;
                                     break;
+
                                     
                                 default:
                                     Console.WriteLine("Invalid input. Please try again.");

@@ -9,6 +9,7 @@ namespace Blackjack
         private static Random random = new Random();
         private int WaitRandomTime = 0;
         private Deck deck;
+        private Pile pile;
         private Dealer dealer;
         private List<Player> players = new List<Player>();
 
@@ -17,6 +18,16 @@ namespace Blackjack
             dealer = new Dealer();
         }
 
+        public void ResetHands()
+        {
+            foreach (Player player in players)
+            {
+                player.Hand.Clear();
+            }
+            dealer.Hand.Clear();
+        }
+
+        
         public void SetupGame()
         {
             bool setupComplete = false;
@@ -34,9 +45,17 @@ namespace Blackjack
                 switch (input)
                 {
                     case "1":
+                        if (deck != null)
+                        {
+                            deck.Delete();
+                            deck = null;
+                        }
+                        
                         deck = new Deck();
                         Console.WriteLine("A new deck has been grabbed.");
                         break;
+
+
                     case "2":
                         if (deck == null)
                         {
@@ -44,9 +63,12 @@ namespace Blackjack
                         }
                         else
                         {
-                            deck.ShuffleDrawPile();
+                            pile = new Pile();
+                            pile.Shuffle();
                             Console.WriteLine("The deck has been shuffled.");
                         }
+                        break;
+
                         break;
                     case "3":
                         if (deck == null)
@@ -125,6 +147,7 @@ namespace Blackjack
             {
                 Console.WriteLine($"Player {players.IndexOf(player) + 1}'s hand:");
                 player.Hand.Display();
+                Thread.Sleep(2000);
             }
             
             
@@ -142,7 +165,7 @@ namespace Blackjack
                     Console.WriteLine($"Player {players.IndexOf(player) + 1} is thinking:");
                     ReRandomizer();
                     Thread.Sleep(WaitRandomTime);
-                    string playerAction = player.PlayBasicStrategy(dealer.Hand.GetUpCard(), deck);
+                    string playerAction = player.PlayBasicStrategy(dealer.Hand.GetUpCard(), deck); // logica op Player.cs
     
                     if (playerAction == "hit")
                     {
@@ -187,6 +210,44 @@ namespace Blackjack
             Thread.Sleep(1000);
             dealer.DealerChoice(deck);
         }
+        
+        private enum GameResult // wou eerst boolean gebruiken maar realizeerden dat je ook gelijk kon spelen
+        {
+            Win,
+            Loss,
+            Push
+        }
+
+        public void CheckRewards()
+        {
+            Dictionary<Player, GameResult> results = new Dictionary<Player, GameResult>();
+
+            foreach (Player player in players)
+            {
+                if (player.Hand.IsBusted())
+                {
+                    results[player] = GameResult.Loss;
+                    Console.WriteLine($"Player {players.IndexOf(player)} busts. They lose.");
+                }
+                else if (dealer.Hand.IsBusted() || player.Hand.Score > dealer.Hand.Score)
+                {
+                    results[player] = GameResult.Win;
+                    Console.WriteLine($"Player {players.IndexOf(player)} wins.");
+                }
+                else if (player.Hand.Score < dealer.Hand.Score)
+                {
+                    results[player] = GameResult.Loss;
+                    Console.WriteLine($"Player {players.IndexOf(player)} loses.");
+                }   
+                else
+                {
+                    results[player] = GameResult.Push;
+                    Console.WriteLine($"Player {players.IndexOf(player)} pushes.");
+                }
+            }
+        }
+
+        
 
 
         private int ChooseNumberOfPlayers()
