@@ -6,6 +6,8 @@ namespace Blackjack
     {
         public Hand Hand { get; }
         public int BetAmount { get; private set; } = 0;
+        
+        public int Score { get; private set; } = 0;
 
         public Player()
         {
@@ -39,7 +41,7 @@ namespace Blackjack
         
         public string PlayBasicStrategy(Card dealerUpcard, Deck deck) // logica met hulp van chatgpt gemaakt om te kijken wat de hoogste win % is 
         {
-            int handTotal = Hand.Score;
+            int handTotal = Hand.TotalCardValue;
             string Action = "stand";
             if (handTotal <= 8)
             {

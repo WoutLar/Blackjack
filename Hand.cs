@@ -6,7 +6,7 @@ namespace Blackjack
     public class Hand
     {
         private List<Card> cards = new List<Card>();
-        public int Score { get; private set; } = 0;
+        public int TotalCardValue { get; private set; } = 0;
 
         public void AddCard(Card card)
         {
@@ -23,7 +23,7 @@ namespace Blackjack
                 Thread.Sleep(200);
             }
             Console.WriteLine("");
-            Console.WriteLine($"Total Score: {Score}");
+            Console.WriteLine($"Total Score: {TotalCardValue}");
             Console.WriteLine("-----------------------");
         }
 
@@ -69,25 +69,25 @@ namespace Blackjack
                 numberOfAces--;
             }
 
-            Score = score;
+            TotalCardValue = score;
         }
 
         public bool HasBlackJack()
         {
-            return Score == 21;
+            return TotalCardValue == 21;
         }
 
         
         public bool IsBusted()
         {
-            return Score > 21;
+            return TotalCardValue > 21;
         }
 
         
         public void Clear()
         {
             cards.Clear();
-            Score = 0;
+            TotalCardValue = 0;
         }
 
         

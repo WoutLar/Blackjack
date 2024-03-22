@@ -13,7 +13,7 @@ namespace Blackjack
         
         public void DealerChoice(Deck deck)
         {
-            while (!Hand.IsBusted())
+            while (!Hand.IsBusted())    
             {
                 Console.WriteLine("Dealer is thinking...");
                 Thread.Sleep(100);

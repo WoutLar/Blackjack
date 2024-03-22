@@ -229,12 +229,12 @@ namespace Blackjack
                     results[player] = GameResult.Loss;
                     Console.WriteLine($"Player {players.IndexOf(player)} busts. They lose.");
                 }
-                else if (dealer.Hand.IsBusted() || player.Hand.Score > dealer.Hand.Score)
+                else if (dealer.Hand.IsBusted() || player.Hand.TotalCardValue > dealer.Hand.TotalCardValue)
                 {
                     results[player] = GameResult.Win;
                     Console.WriteLine($"Player {players.IndexOf(player)} wins.");
                 }
-                else if (player.Hand.Score < dealer.Hand.Score)
+                else if (player.Hand.TotalCardValue < dealer.Hand.TotalCardValue)
                 {
                     results[player] = GameResult.Loss;
                     Console.WriteLine($"Player {players.IndexOf(player)} loses.");
@@ -253,7 +253,7 @@ namespace Blackjack
         private int ChooseNumberOfPlayers()
         {
             int numPlayers;
-            do
+            do //1ste keer dat ik zoon statement gebruik dacht dat het handig zou zijn.
             {
                 Console.WriteLine("How many players do you want to play with (1-4)?");
             } while (!int.TryParse(Console.ReadLine(), out numPlayers) || numPlayers < 1 || numPlayers > 4);
