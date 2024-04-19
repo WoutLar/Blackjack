@@ -11,7 +11,8 @@ namespace Blackjack
             
             bool exit = false;
             bool debugMode = false;
-            bool PLayAgain = true;
+            bool setup = false;
+            bool PlayAgain = true;
             while (!exit)
             {
                 Console.WriteLine("Choose an action:");
@@ -34,9 +35,12 @@ namespace Blackjack
                 switch (input)
                 {
                     case "1":
-                        while (PLayAgain)
+                        while (PlayAgain)
                         {
-                            game.SetupGame();
+                            if (!setup)
+                            {
+                                game.SetupGame();
+                            }
                         
                             game.PlayerTurns();
                             game.DealerTurn();
@@ -48,12 +52,13 @@ namespace Blackjack
                             {
                                 case "y":
                                     Console.WriteLine("Game will play on:");
-                                    PLayAgain = true;
+                                    PlayAgain = true;
+                                    setup = true;
                                     game.ResetHands();
                                     break;
                                 case "n":
                                     Console.WriteLine("Game will close");
-                                    PLayAgain = false;
+                                    PlayAgain = false;
                                     break;
 
                                     

@@ -5,23 +5,24 @@ namespace Blackjack
     public class Player
     {
         public Hand Hand { get; }
-        public List<Hand> Hands { get; private set; }
-        public int BetAmount { get; private set; } = 0;
-        
-        public int Score { get; private set; } = 0;
+        public List<Hand> Hands { get; set; }
 
+        public int Chips { get; set; } = 400;
+
+        
         public Player()
         {
+            Chips = 400;
             Hand = new Hand();
             Hands = new List<Hand>();
             Hands.Add(Hand);
             
         }
 
-        public virtual void Hit(Deck deck)
+        public virtual void Hit(Deck deck, int index)
         {
             Card drawnCard = deck.Draw();
-            Hand.AddCard(drawnCard);
+            Hands[index].AddCard(drawnCard);
             Console.WriteLine("you drew : " + drawnCard);
         }
 
@@ -30,15 +31,19 @@ namespace Blackjack
             Console.WriteLine("Player stands.");
         }
 
-        public virtual void DoubleDown(Deck deck)
+        public virtual void DoubleDown(Deck deck, int index, int betAmount ,int chips)
         {
-            BetAmount *= 2;
-            Card drawnCard = deck.Draw();
-            Hand.AddCard(drawnCard);
-            Stand();
+            if (betAmount*2 < chips)
+            {
+                betAmount *= 2;
+                Card drawnCard = deck.Draw();
+                Hands[index].AddCard(drawnCard);
+                Stand();
+                betAmount = betAmount * 2;
+            }
         }
 
-        public void Split()
+        public void Split(int betAmount)
         {
             if (Hands == null)
             {
@@ -46,7 +51,7 @@ namespace Blackjack
                 return;
             }
 
-            Hand splitHand = Hand.Split();
+            Hand splitHand = Hand.Split(betAmount, Chips);
             if (splitHand != null)
             {
                 Hands.Add(splitHand);
@@ -63,11 +68,24 @@ namespace Blackjack
             }
         }
         
-        public string PlayBasicStrategy(Card dealerUpcard, Deck deck) // logica met hulp van chatgpt gemaakt om te kijken wat de hoogste win percentage is 
+        public void PlaceBet(int amount)
         {
-            int handTotal = Hand.TotalCardValue;
+            if (amount <= Chips)
+            {
+                Chips -= amount;
+                Console.WriteLine($"Player placed a bet of {amount} chips.");
+            }
+            else
+            {
+                Console.WriteLine("Insufficient chips to place the bet.");
+            }
+        }
+        
+        public string PlayBasicStrategy(Card dealerUpcard, Deck deck, int currentHandIndex, int betAmount) // logica met hulp van chatgpt gemaakt om te kijken wat de hoogste win percentage is 
+        {
+            int handTotal = Hands[currentHandIndex].TotalCardValue;
             string Action = "stand";
-            if (Hand.CanSplit())
+            if (Hands[currentHandIndex].CanSplit(betAmount, Chips))
             {
                 Console.WriteLine("SPLIT!");
                 Action = "split";

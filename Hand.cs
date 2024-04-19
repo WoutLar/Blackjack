@@ -20,9 +20,10 @@ namespace Blackjack
             foreach (var card in cards)
             {
                 Console.WriteLine("");
-                Console.WriteLine("[ - "+card+" - ]");
+                Console.WriteLine("[ - " + card + " - ]");
                 Thread.Sleep(200);
             }
+
             Console.WriteLine("");
             Console.WriteLine($"Total Score: {TotalCardValue}");
             Console.WriteLine("-----------------------");
@@ -32,7 +33,7 @@ namespace Blackjack
         {
             for (int i = 0; i < cards.Count; i++)
             {
-                if (i == 1) 
+                if (i == 1)
                 {
                     Console.WriteLine("");
                     Console.WriteLine("[ - " + cards[i] + " - ]");
@@ -44,6 +45,7 @@ namespace Blackjack
                     Console.WriteLine("[ - xxxxxxxxx - ]");
                 }
             }
+
             Console.WriteLine("");
             Console.WriteLine("----------------------");
         }
@@ -63,7 +65,7 @@ namespace Blackjack
 
                 score += (int)card.Rank;
             }
-            
+
             while (score > Maxscore && numberOfAces > 0)
             {
                 score -= 10;
@@ -78,23 +80,23 @@ namespace Blackjack
             return TotalCardValue == 21;
         }
 
-        
+
         public bool IsBusted()
         {
             return TotalCardValue > 21;
         }
 
-        
+
         public void Clear()
         {
             cards.Clear();
             TotalCardValue = 0;
         }
-        
-        public Hand Split()
+
+        public Hand Split(int betAmount, int chips)
         {
-            if (CanSplit())
-            { 
+            if (CanSplit(betAmount, chips))
+            {
                 Hand newHand = new Hand();
                 newHand.AddCard(cards[1]);
                 cards.RemoveAt(1);
@@ -102,13 +104,13 @@ namespace Blackjack
             }
             else
             {
-                return null; 
+                return null;
             }
         }
 
-        public bool CanSplit()
+        public bool CanSplit(int betAmount, int chips)
         {
-            if (cards.Count == 2 && cards[0].Rank == cards[1].Rank)
+            if (cards.Count == 2 && cards[0].Rank == cards[1].Rank && betAmount * 2 <= chips)
             {
                 return true;
             }
@@ -117,6 +119,7 @@ namespace Blackjack
                 return false;
             }
         }
+
 
         public Card GetUpCard()
         {

@@ -1,5 +1,4 @@
-﻿// Dealer.cs
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Blackjack
@@ -25,7 +24,7 @@ namespace Blackjack
                 switch (choice)
                 {
                     case "1":
-                        Hit(deck);
+                        Hit(deck, 0);
                         Hand.Display();
                         break;
                     case "2":
