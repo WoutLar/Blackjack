@@ -1,8 +1,0 @@
-﻿
-    namespace Blackjack
-    {
-        class BlackjackDealer
-        {
-
-        }
-    }
