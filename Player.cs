@@ -5,6 +5,7 @@ namespace Blackjack
     public class Player
     {
         public Hand Hand { get; }
+        public List<Hand> Hands { get; private set; }
         public int BetAmount { get; private set; } = 0;
         
         public int Score { get; private set; } = 0;
@@ -12,13 +13,16 @@ namespace Blackjack
         public Player()
         {
             Hand = new Hand();
+            Hands = new List<Hand>();
+            Hands.Add(Hand);
+            
         }
 
         public virtual void Hit(Deck deck)
         {
             Card drawnCard = deck.Draw();
             Hand.AddCard(drawnCard);
-            Console.WriteLine("you drew : "+drawnCard);
+            Console.WriteLine("you drew : " + drawnCard);
         }
 
         public virtual void Stand()
@@ -34,16 +38,41 @@ namespace Blackjack
             Stand();
         }
 
-        public virtual void Split()
+        public void Split()
         {
-            // TBD split logic
+            if (Hands == null)
+            {
+                Console.WriteLine("Cannot split hand.");
+                return;
+            }
+
+            Hand splitHand = Hand.Split();
+            if (splitHand != null)
+            {
+                Hands.Add(splitHand);
+                Console.WriteLine("splitting hand sucesfully");
+                Console.WriteLine("Player's hands:");
+                foreach (var hand in Hands)
+                {
+                    hand.Display();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Cannot split hand.");
+            }
         }
         
-        public string PlayBasicStrategy(Card dealerUpcard, Deck deck) // logica met hulp van chatgpt gemaakt om te kijken wat de hoogste win % is 
+        public string PlayBasicStrategy(Card dealerUpcard, Deck deck) // logica met hulp van chatgpt gemaakt om te kijken wat de hoogste win percentage is 
         {
             int handTotal = Hand.TotalCardValue;
             string Action = "stand";
-            if (handTotal <= 8)
+            if (Hand.CanSplit())
+            {
+                Console.WriteLine("SPLIT!");
+                Action = "split";
+            }
+            else if (handTotal <= 8)
             {
                 Console.WriteLine("hit!");
                 Action = "hit";

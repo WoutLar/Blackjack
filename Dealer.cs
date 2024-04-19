@@ -10,7 +10,7 @@ namespace Blackjack
         {
             Console.WriteLine("Dealer stands.");
         }
-        
+            
         public void DealerChoice(Deck deck)
         {
             while (!Hand.IsBusted())    

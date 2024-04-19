@@ -16,6 +16,7 @@ namespace Blackjack
 
         public void Display()
         {
+            UpdateScore();
             foreach (var card in cards)
             {
                 Console.WriteLine("");
@@ -89,22 +90,34 @@ namespace Blackjack
             cards.Clear();
             TotalCardValue = 0;
         }
-
         
         public Hand Split()
         {
-            if (cards.Count != 2 || cards[0].Rank != cards[1].Rank)
-            {
-                return null;
+            if (CanSplit())
+            { 
+                Hand newHand = new Hand();
+                newHand.AddCard(cards[1]);
+                cards.RemoveAt(1);
+                return newHand;
             }
-            Hand newHand = new Hand();
-                
-            newHand.AddCard(cards[1]);
-            cards.RemoveAt(1);
-
-            return newHand;
+            else
+            {
+                return null; 
+            }
         }
-        
+
+        public bool CanSplit()
+        {
+            if (cards.Count == 2 && cards[0].Rank == cards[1].Rank)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public Card GetUpCard()
         {
             if (cards.Count >= 2)

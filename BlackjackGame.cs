@@ -45,12 +45,6 @@ namespace Blackjack
                 switch (input)
                 {
                     case "1":
-                        if (deck != null)
-                        {
-                            deck.Delete();
-                            deck = null;
-                        }
-                        
                         deck = new Deck();
                         Console.WriteLine("A new deck has been grabbed.");
                         break;
@@ -112,6 +106,7 @@ namespace Blackjack
 
         private void StartGame()
         {
+            
             foreach (Player player in players)
             {
                 player.Hand.AddCard(deck.Draw());
@@ -165,7 +160,7 @@ namespace Blackjack
                     Console.WriteLine($"Player {players.IndexOf(player) + 1} is thinking:");
                     ReRandomizer();
                     Thread.Sleep(WaitRandomTime);
-                    string playerAction = player.PlayBasicStrategy(dealer.Hand.GetUpCard(), deck); // logica op Player.cs
+                    string playerAction = player.PlayBasicStrategy(dealer.Hand.GetUpCard(), deck);
     
                     if (playerAction == "hit")
                     {
@@ -191,6 +186,50 @@ namespace Blackjack
                         player.Hand.Display();
                         player.Stand();
                         stand = true;
+                    }
+                    else if (playerAction == "split")
+                    {
+                        Console.Write("player Splits! playing 1st hand");
+                        Console.Write($"grab card for {players.IndexOf(player) + 1}");
+                        Console.ReadLine();
+                        player.Split();
+                        foreach (var hand in player.Hands)
+                        {
+                            stand = false;
+                            while (!hand.IsBusted() && !stand)
+                            {
+                                Console.WriteLine($"Player {players.IndexOf(player) + 1} is thinking:");
+                                ReRandomizer();
+                                Thread.Sleep(WaitRandomTime);
+                                string handAction = player.PlayBasicStrategy(dealer.Hand.GetUpCard(), deck);
+
+                                if (handAction == "hit")
+                                {
+                                    Console.WriteLine($"Grab a card for Player {players.IndexOf(player) + 1}");
+                                    Console.ReadLine();
+                                    player.Hit(deck);
+                                    Console.WriteLine($"Player {players.IndexOf(player) + 1}'s hand:");
+                                    hand.Display();
+                                }
+                                else if (handAction == "stand")
+                                {
+                                    player.Stand();
+                                    stand = true;
+                                    Console.WriteLine("no dealer input needed, play on");
+                                    Thread.Sleep(1000);
+                                }
+                                else if (playerAction == "DD")
+                                {
+                                    Console.WriteLine($"1 Grab a card for Player {players.IndexOf(player) + 1}");
+                                    Console.ReadLine();
+                                    player.DoubleDown(deck);
+                                    Console.WriteLine($"Player {players.IndexOf(player) + 1}'s hand:");
+                                    player.Hand.Display();
+                                    player.Stand();
+                                    stand = true;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -253,7 +292,7 @@ namespace Blackjack
         private int ChooseNumberOfPlayers()
         {
             int numPlayers;
-            do //1ste keer dat ik zoon statement gebruik dacht dat het handig zou zijn.
+            do //1ste keer dat ik deze statement gebruik dacht dat het handig zou zijn.
             {
                 Console.WriteLine("How many players do you want to play with (1-4)?");
             } while (!int.TryParse(Console.ReadLine(), out numPlayers) || numPlayers < 1 || numPlayers > 4);
